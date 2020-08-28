@@ -1,7 +1,6 @@
 const frisby = require('frisby');
-const shell = require('shelljs')
 const { MongoClient } = require('mongodb');
-const { spawnSync } = require("child_process");
+const shell = require('shelljs');
 
 const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
 const url = 'http://localhost:3000';
@@ -18,6 +17,10 @@ describe('6 - Permissões do usuário admin', () => {
     db = connection.db('Cookmaster');
     await db.collection('users').deleteMany({});
     await db.collection('recipes').deleteMany({});
+    const users = [
+      { name: 'admin', email: 'root@email.com', password: 'admin', role: 'admin' }
+    ];
+    await db.collection('users').insertMany(users);
   });
   
   afterAll(async () => {
@@ -29,7 +32,8 @@ describe('6 - Permissões do usuário admin', () => {
     //shell.exec("cmd=\"mongo $DBNAME --quiet --eval 'DBQuery.shellBatchSize = 100000; DBQuery.prototype._prettyShell = true; $mql'\"");
     //shell.exec("docker exec \"$mongoContainerID\" bash -c \"$cmd\"");
     //const shellDocker = shell.exec('docker -v');
-    shell.exec('load("./seed.js");');
+    //const teste = fs.readFileSync('seed.js');
+    shell.exec('seed.js');
     //const teste = spawnSync('docker', ['-v']);
     //console.log('teste', teste);
     return frisby
