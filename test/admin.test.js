@@ -29,8 +29,9 @@ describe('6 - Permissões do usuário admin', () => {
     //shell.exec("cmd=\"mongo $DBNAME --quiet --eval 'DBQuery.shellBatchSize = 100000; DBQuery.prototype._prettyShell = true; $mql'\"");
     //shell.exec("docker exec \"$mongoContainerID\" bash -c \"$cmd\"");
     //const shellDocker = shell.exec('docker -v');
-    const teste = spawnSync('docker', ['-v']);
-    console.log('teste', teste);
+    shell.exec('load("./seed.js");');
+    //const teste = spawnSync('docker', ['-v']);
+    //console.log('teste', teste);
     return frisby
       .post(`${url}/login`,
         {
