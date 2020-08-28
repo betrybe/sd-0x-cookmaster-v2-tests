@@ -24,7 +24,9 @@ describe('6 - Permissões do usuário admin', () => {
   });
   
   it('Será validado que o projeto tem um arquivo de seed, com um comando para inserir um usuário root', async () => {
-    shell.exec('mongo < ./seed.js');
+    shell.exec("mongoContainerID=$(docker ps --format \"{{.ID}} {{.Image}}\" | grep mongo | cut -d ' ' -f1)");
+    shell.exec("cmd=\"mongo $DBNAME --quiet --eval 'DBQuery.shellBatchSize = 100000; DBQuery.prototype._prettyShell = true; $mql'\"");
+    shell.exec("docker exec \"$mongoContainerID\" bash -c \"$cmd\"");
     return frisby
       .post(`${url}/login`,
         {
