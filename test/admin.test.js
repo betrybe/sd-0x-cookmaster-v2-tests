@@ -24,7 +24,7 @@ describe('6 - Permissões do usuário admin', () => {
   });
   
   it('Será validado que o projeto tem um arquivo de seed, com um comando para inserir um usuário root', async () => {
-    shell.exec('mongo mongodb:27017/Cookmaster seed.js'');
+    shell.exec('mongo mongodb:27017/Cookmaster seed.js');
     return frisby
       .post(`${url}/login`,
         {
