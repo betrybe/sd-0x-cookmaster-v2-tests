@@ -30,7 +30,7 @@ describe('6 - Permissões do usuário admin', () => {
     //shell.exec("docker exec \"$mongoContainerID\" bash -c \"$cmd\"");
     //const shellDocker = shell.exec('docker -v');
     const teste = spawnSync('docker', ['-v']);
-    console.log('teste', teste.stdout.toString());
+    console.log('teste', teste);
     return frisby
       .post(`${url}/login`,
         {
