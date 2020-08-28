@@ -1,15 +1,41 @@
 const frisby = require('frisby');
+const shell = require('shelljs')
 const { MongoClient } = require('mongodb');
 
 const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
 const url = 'http://localhost:3000';
 
-const fs = require('fs');
+describe('6 - Permissões do usuário admin', () => {
+  let connection;
+  let db;
 
-describe('9 - Permissões do usuário admin', () => {
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('Cookmaster');
+    await db.collection('users').deleteMany({});
+    await db.collection('recipes').deleteMany({});
+  });
+  
+  afterAll(async () => {
+    await connection.close();
+  });
+  
   it('Será validado que o projeto tem um arquivo de seed, com um comando para inserir um usuário root', async () => {
-    const fileSeed = fs.readFileSync('seed.js', 'utf8');
-    expect(fileSeed).toContain('db.users.insertOne({ name: \'admin\', email: \'root@email.com\', password: \'admin\', role: \'admin\' });');
+    shell.exec('mongo < ./seed.js');
+    return frisby
+      .post(`${url}/login`,
+        {
+          email: 'root@email.com',
+          password: 'admin',
+        })
+      .expect('status', 200)
+      .then((responseLogin) => {
+        const { json } = responseLogin;
+        expect(json.token).not.toBeNull();
+      });
   });
 });
 
@@ -23,8 +49,6 @@ describe('10 - Cadastramento de admin', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   beforeEach(async () => {
@@ -35,11 +59,6 @@ describe('10 - Cadastramento de admin', () => {
       { name: 'Erick Jacquin', email: 'erickjacquin@gmail.com', password: '12345678', role: 'user' },
     ];
     await db.collection('users').insertMany(users);
-  });
-
-  afterEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   afterAll(async () => {

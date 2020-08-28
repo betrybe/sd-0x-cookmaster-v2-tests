@@ -16,8 +16,6 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   beforeEach(async () => {
@@ -30,18 +28,11 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
     await db.collection('users').insertMany(users);
   });
 
-  afterEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
-  });
-
   afterAll(async () => {
     await connection.close();
   });
 
   it('Será validado que não é possível cadastrar receita sem o campo "name"', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login/`,
         {
@@ -51,7 +42,7 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -75,8 +66,6 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
   });
 
   it('Será validado que não é possível cadastrar receita sem o campo "preparation"', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login/`,
         {
@@ -86,7 +75,7 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -110,8 +99,6 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
   });
 
   it('Será validado que não é possível cadastrar receita sem o campo "ingredients"', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login/`,
         {
@@ -121,7 +108,7 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -168,8 +155,6 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
   });
 
   it('Será validado que é possível cadastrar uma receita com sucesso', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login/`,
         {
@@ -179,7 +164,7 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -216,8 +201,6 @@ describe('4 - Crie um endpoint para a listagem de receitas', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   beforeEach(async () => {
@@ -238,24 +221,17 @@ describe('4 - Crie um endpoint para a listagem de receitas', () => {
     await db.collection('recipes').insertMany(ListRecipes);
   });
 
-  afterEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
-  });
-
   afterAll(async () => {
     await connection.close();
   });
 
   it('Será validado que é possível listar todas as receitas sem estar autenticado', async () => {
-    let result;
-
     await frisby
       .get(`${url}/recipes/`)
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result[0].name).toBe('banana caramelizada');
         expect(result[0].ingredients).toBe('banana, açúcar');
         expect(result[0].preparation).toBe('coloque o açúcar na frigideira até virar caramelo e jogue a banana');
@@ -263,8 +239,6 @@ describe('4 - Crie um endpoint para a listagem de receitas', () => {
   });
 
   it('Será validado que é possível listar todas as receitas estando autenticado', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login/`,
         {
@@ -274,7 +248,7 @@ describe('4 - Crie um endpoint para a listagem de receitas', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -302,7 +276,7 @@ describe('4 - Crie um endpoint para a listagem de receitas', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -337,8 +311,6 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   beforeEach(async () => {
@@ -359,17 +331,11 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
     await db.collection('recipes').insertMany(ListRecipes);
   });
 
-  afterEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
-  });
-
   afterAll(async () => {
     await connection.close();
   });
 
-  it('Será validado que é possível listar uma receita especifica sem estar autenticado', async () => {
-    let result;
+  it('Será validado que é possível listar uma receita específica sem estar autenticado', async () => {
     let resultRecipe;
 
     await frisby
@@ -381,7 +347,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -409,15 +375,14 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.name).toBe('Receita de frango do Jacquin');
         expect(result.ingredients).toBe('Frango');
         expect(result.preparation).toBe('10 min no forno');
       });
   });
 
-  it('Será validado que é possível listar uma receita especifica estando autenticado', async () => {
-    let result;
+  it('Será validado que é possível listar uma receita específica estando autenticado', async () => {
     let resultRecipe;
 
     await frisby
@@ -429,7 +394,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -461,7 +426,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -483,8 +448,6 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
   });
 
   it('Será validado que não é possível listar uma receita que não existe', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login/`,
         {
@@ -494,7 +457,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -522,7 +485,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -542,7 +505,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
   });
 });
 
-describe('6 - Crie um endpoint para a edição de uma receita', () => {
+describe('7 - Crie um endpoint para a edição de uma receita', () => {
   let connection;
   let db;
 
@@ -552,8 +515,6 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   beforeEach(async () => {
@@ -574,17 +535,11 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
     await db.collection('recipes').insertMany(ListRecipes);
   });
 
-  afterEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
-  });
-
   afterAll(async () => {
     await connection.close();
   });
 
   it('Será validado que não é possível editar receita sem estar autenticado', async () => {
-    let result;
     let resultRecipes;
 
     await frisby
@@ -596,7 +551,7 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -629,13 +584,12 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
       .expect('status', 401)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('missing auth token');
       });
   });
 
   it('Será validado que não é possível editar receita com token inválido', async () => {
-    let result;
     let resultRecipes;
 
     await frisby
@@ -647,7 +601,7 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -688,7 +642,7 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
       .expect('status', 401)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('jwt malformed');
       });
   });
@@ -755,7 +709,6 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
   });
 
   it('Será validado que é possível editar receita com usuário admin', async () => {
-    let result;
     let resultRecipes;
     let resultAdmin;
 
@@ -768,7 +721,7 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -821,7 +774,7 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.name).toBe('Receita de frango do Jacquin editado');
         expect(result.ingredients).toBe('Frango editado');
         expect(result.preparation).toBe('10 min no forno editado');
@@ -829,7 +782,7 @@ describe('6 - Crie um endpoint para a edição de uma receita', () => {
   });
 });
 
-describe('7 - Crie um endpoint para a exclusão de uma receita', () => {
+describe('8 - Crie um endpoint para a exclusão de uma receita', () => {
   let connection;
   let db;
 
@@ -839,8 +792,6 @@ describe('7 - Crie um endpoint para a exclusão de uma receita', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   beforeEach(async () => {
@@ -861,17 +812,11 @@ describe('7 - Crie um endpoint para a exclusão de uma receita', () => {
     await db.collection('recipes').insertMany(ListRecipes);
   });
 
-  afterEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
-  });
-
   afterAll(async () => {
     await connection.close();
   });
 
   it('Será validado que não é possível excluir receita sem estar autenticado', async () => {
-    let result;
     let resultRecipes;
 
     await frisby
@@ -883,7 +828,7 @@ describe('7 - Crie um endpoint para a exclusão de uma receita', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -911,7 +856,7 @@ describe('7 - Crie um endpoint para a exclusão de uma receita', () => {
       .expect('status', 401)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('missing auth token');
       });
   });
@@ -966,7 +911,6 @@ describe('7 - Crie um endpoint para a exclusão de uma receita', () => {
   });
 
   it('Será validado que é possível excluir receita com usuário admin', async () => {
-    let result;
     let resultRecipes;
     let resultAdmin;
 
@@ -979,7 +923,7 @@ describe('7 - Crie um endpoint para a exclusão de uma receita', () => {
       .expect('status', 200)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .setup({
             request: {
@@ -1028,7 +972,7 @@ describe('7 - Crie um endpoint para a exclusão de uma receita', () => {
   });
 });
 
-describe('8 - Crie um endpoint para a adição de uma imagem a uma receita', () => {
+describe('9 - Crie um endpoint para a adição de uma imagem a uma receita', () => {
   let connection;
   let db;
 
@@ -1038,8 +982,6 @@ describe('8 - Crie um endpoint para a adição de uma imagem a uma receita', () 
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   beforeEach(async () => {
@@ -1058,11 +1000,6 @@ describe('8 - Crie um endpoint para a adição de uma imagem a uma receita', () 
       },
     ];
     await db.collection('recipes').insertMany(ListRecipes);
-  });
-
-  afterEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   afterAll(async () => {

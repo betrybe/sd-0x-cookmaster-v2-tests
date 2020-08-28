@@ -14,8 +14,6 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   beforeEach(async () => {
@@ -26,18 +24,11 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
     await db.collection('users').insertOne(users);
   });
 
-  afterEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
-  });
-
   afterAll(async () => {
     await connection.close();
   });
 
   it('Será validado que o campo "name" é obrigatório', async () => {
-    let result;
-
     await frisby
       .post(`${url}/users/`,
         {
@@ -47,31 +38,27 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
       .expect('status', 400)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('Invalid entries. Try again.');
       });
   });
 
   it('Será validado que o campo "email" é obrigatório', async () => {
-    let result;
-
     await frisby
       .post(`${url}/users/`,
         {
-          email: 'erickjaquin@gmail.com',
+          name: 'Erick Jacquin',
           password: '12345678',
         })
       .expect('status', 400)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('Invalid entries. Try again.');
       });
   });
 
   it('Será validado que não é possível cadastrar usuário com o campo email inválido', async () => {
-    let result;
-
     await frisby
       .post(`${url}/users/`,
         {
@@ -82,32 +69,27 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
       .expect('status', 400)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('Invalid entries. Try again.');
       });
   });
 
   it('Será validado que o campo "senha" é obrigatório', async () => {
-    let result;
-
     await frisby
       .post(`${url}/users/`,
         {
           name: 'Erick Jacquin',
           email: 'erickjaquin',
-          password: '12345678',
         })
       .expect('status', 400)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('Invalid entries. Try again.');
       });
   });
 
   it('Será validado que o campo "email" é único', async () => {
-    let result;
-
     await frisby
       .post(`${url}/users/`,
         {
@@ -127,14 +109,12 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
       .expect('status', 409)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('Email already registered');
       });
   });
 
   it('Será validado que é possível cadastrar usuário com sucesso', async () => {
-    let result;
-
     await frisby
       .post(`${url}/users/`,
         {
@@ -145,15 +125,13 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
       .expect('status', 201)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.user.name).toBe('Erick Jacquin');
         expect(result.user.email).toBe('erickjaquin@gmail.com');
       });
   });
 
   it('Será validado que é possível ao cadastrar usuário, o valor do campo "role" tenha o valor "user"', async () => {
-    let result;
-
     await frisby
       .post(`${url}/users/`,
         {
@@ -164,7 +142,7 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
       .expect('status', 201)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.user.name).toBe('Erick Jacquin');
         expect(result.user.email).toBe('erickjaquin@gmail.com');
         expect(result.user.role).toBe('user');
@@ -182,8 +160,6 @@ describe('2 - Crie um endpoint para o login de usuários', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   beforeEach(async () => {
@@ -194,18 +170,11 @@ describe('2 - Crie um endpoint para o login de usuários', () => {
     await db.collection('users').insertOne(users);
   });
 
-  afterEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
-  });
-
   afterAll(async () => {
     await connection.close();
   });
 
   it('Será validado que o campo "email" é obrigatório', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login/`,
         {
@@ -214,14 +183,12 @@ describe('2 - Crie um endpoint para o login de usuários', () => {
       .expect('status', 401)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('All fields must be filled');
       });
   });
 
   it('Será validado que o campo "password" é obrigatório', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login/`,
         {
@@ -230,14 +197,12 @@ describe('2 - Crie um endpoint para o login de usuários', () => {
       .expect('status', 401)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('All fields must be filled');
       });
   });
 
   it('Será validado que não é possível fazer login com um email inválido', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login`,
         {
@@ -247,14 +212,12 @@ describe('2 - Crie um endpoint para o login de usuários', () => {
       .expect('status', 401)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('Incorrect username or password');
       });
   });
 
   it('Será validado que não é possível fazer login com uma senha inválida', async () => {
-    let result;
-
     await frisby
       .post(`${url}/login`,
         {
@@ -264,14 +227,12 @@ describe('2 - Crie um endpoint para o login de usuários', () => {
       .expect('status', 401)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         expect(result.message).toBe('Incorrect username or password');
       });
   });
 
   it('Será validado que é possível fazer login com sucesso', async () => {
-    let result;
-
     await frisby
       .post(`${url}/users/`,
         {
@@ -282,7 +243,7 @@ describe('2 - Crie um endpoint para o login de usuários', () => {
       .expect('status', 201)
       .then((response) => {
         const { body } = response;
-        result = JSON.parse(body);
+        const result = JSON.parse(body);
         return frisby
           .post(`${url}/login`,
             {
