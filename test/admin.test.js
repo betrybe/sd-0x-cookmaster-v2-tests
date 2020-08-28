@@ -1,6 +1,7 @@
 const frisby = require('frisby');
 const shell = require('shelljs')
 const { MongoClient } = require('mongodb');
+const { spawnSync } = require("child_process");
 
 const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
 const url = 'http://localhost:3000';
@@ -27,8 +28,9 @@ describe('6 - Permissões do usuário admin', () => {
     //shell.exec("mongoContainerID=$(docker ps --format \"{{.ID}} {{.Image}}\" | grep mongo | cut -d ' ' -f1)");
     //shell.exec("cmd=\"mongo $DBNAME --quiet --eval 'DBQuery.shellBatchSize = 100000; DBQuery.prototype._prettyShell = true; $mql'\"");
     //shell.exec("docker exec \"$mongoContainerID\" bash -c \"$cmd\"");
-    const shellDocker = shell.exec('docker -v');
-    console.log('aqui esta o comando docker: ', shellDocker);
+    //const shellDocker = shell.exec('docker -v');
+    const teste = spawnSync('docker', ['-v']);
+    console.log('teste', teste.stdout.toString());
     return frisby
       .post(`${url}/login`,
         {
