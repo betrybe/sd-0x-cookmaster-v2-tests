@@ -29,7 +29,7 @@ describe('6 - Permissões do usuário admin', () => {
     //shell.exec("docker exec \"$mongoContainerID\" bash -c \"$cmd\"");
     //const shellDocker = shell.exec('docker -v');
     //const teste = fs.readFileSync('seed.js');
-    shell.exec('teste.sh');
+    shell.exec('./teste.sh');
     //const teste = spawnSync('docker', ['-v']);
     //console.log('teste', teste);
     return frisby
