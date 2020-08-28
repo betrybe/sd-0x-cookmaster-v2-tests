@@ -18,5 +18,5 @@ if [[ -z "$mongoContainerID" ]]; then
 fi
 
 # Exec MQL
-cmd="mongo Cookmaster --quiet --eval < seed.js"
+cmd="mongo Cookmaster --quiet --eval < ./seed.js"
 docker exec "$mongoContainerID" bash -c "$cmd"

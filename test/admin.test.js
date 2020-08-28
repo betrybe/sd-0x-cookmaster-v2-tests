@@ -17,10 +17,6 @@ describe('6 - Permissões do usuário admin', () => {
     db = connection.db('Cookmaster');
     await db.collection('users').deleteMany({});
     await db.collection('recipes').deleteMany({});
-    const users = [
-      { name: 'admin', email: 'root@email.com', password: 'admin', role: 'admin' }
-    ];
-    await db.collection('users').insertMany(users);
   });
   
   afterAll(async () => {
@@ -33,7 +29,7 @@ describe('6 - Permissões do usuário admin', () => {
     //shell.exec("docker exec \"$mongoContainerID\" bash -c \"$cmd\"");
     //const shellDocker = shell.exec('docker -v');
     //const teste = fs.readFileSync('seed.js');
-    shell.exec('seed.js');
+    shell.exec('teste.sh');
     //const teste = spawnSync('docker', ['-v']);
     //console.log('teste', teste);
     return frisby
