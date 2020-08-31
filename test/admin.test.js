@@ -1,6 +1,6 @@
 const frisby = require('frisby');
+const fs = require('fs');
 const { MongoClient } = require('mongodb');
-const shell = require('shelljs');
 
 const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
 const url = 'http://localhost:3000';
@@ -24,15 +24,9 @@ describe('6 - Permissões do usuário admin', () => {
   });
   
   it('Será validado que o projeto tem um arquivo de seed, com um comando para inserir um usuário root', async () => {
-    //shell.exec("mongoContainerID=$(docker ps --format \"{{.ID}} {{.Image}}\" | grep mongo | cut -d ' ' -f1)");
-    //shell.exec("cmd=\"mongo $DBNAME --quiet --eval 'DBQuery.shellBatchSize = 100000; DBQuery.prototype._prettyShell = true; $mql'\"");
-    //shell.exec("docker exec \"$mongoContainerID\" bash -c \"$cmd\"");
-    //const shellDocker = shell.exec('docker -v');
-    //const teste = fs.readFileSync('seed.js');
-    shell.exec('./teste.sh');
-    //const teste = spawnSync('docker', ['-v']);
-    //console.log('teste', teste);
-    return frisby
+    const fileSeed = fs.readFileSync('./seed.js', 'utf8');
+    expect(fileSeed).toContain('db.users.insertOne({ name: \'brunao\', email: \'root@email.com\', password: \'admin\', role: \'admin\' });')
+    await frisby
       .post(`${url}/login`,
         {
           email: 'root@email.com',
