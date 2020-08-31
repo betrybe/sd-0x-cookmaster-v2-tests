@@ -17,6 +17,10 @@ describe('6 - Permissões do usuário admin', () => {
     db = connection.db('Cookmaster');
     await db.collection('users').deleteMany({});
     await db.collection('recipes').deleteMany({});
+    const users = [
+      { name: 'admin', email: 'root@email.com', password: 'admin', role: 'admin' }
+    ];
+    await db.collection('users').insertMany(users);
   });
   
   afterAll(async () => {
@@ -25,7 +29,7 @@ describe('6 - Permissões do usuário admin', () => {
   
   it('Será validado que o projeto tem um arquivo de seed, com um comando para inserir um usuário root', async () => {
     const fileSeed = fs.readFileSync('./seed.js', 'utf8');
-    expect(fileSeed).toContain('db.users.insertOne({ name: \'brunao\', email: \'root@email.com\', password: \'admin\', role: \'admin\' });')
+    expect(fileSeed).toContain('db.users.insertOne({ name: \'admin\', email: \'root@email.com\', password: \'admin\', role: \'admin\' });');
     await frisby
       .post(`${url}/login`,
         {
