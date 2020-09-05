@@ -27,7 +27,7 @@ describe('6 - Permissões do usuário admin', () => {
     await connection.close();
   });
   
-  it('Será validado que o projeto tem um arquivo de seed, com um comando para inserir um usuário root', async () => {
+  it('Será validado que o projeto tem um arquivo de seed, com um comando para inserir um usuário root e verifico que é possível fazer login', async () => {
     const fileSeed = fs.readFileSync('./seed.js', 'utf8');
     expect(fileSeed).toContain('db.users.insertOne({ name: \'admin\', email: \'root@email.com\', password: \'admin\', role: \'admin\' });');
     await frisby
