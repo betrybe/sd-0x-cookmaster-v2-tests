@@ -2,7 +2,7 @@ const frisby = require('frisby');
 const fs = require('fs');
 const { MongoClient } = require('mongodb');
 
-const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
+const mongoDbUrl = 'mongodb://localhost:27017/Cookmaster';
 const url = 'http://localhost:3000';
 
 describe('6 - Permissões do usuário admin', () => {
@@ -22,14 +22,14 @@ describe('6 - Permissões do usuário admin', () => {
     ];
     await db.collection('users').insertMany(users);
   });
-  
+
   afterAll(async () => {
     await connection.close();
   });
-  
-  it('Será validado que o projeto tem um arquivo de seed, com um comando para inserir um usuário root e verifico que é possível fazer login', async () => {
+
+  it('Será validado que o projeto tem um arquivo de seed, com um comando para inserir um usuário root e verifico se consigo fazer login', async () => {
     const fileSeed = fs.readFileSync('./seed.js', 'utf8');
-    expect(fileSeed).toContain('db.users.insertOne({ name: \'admin\', email: \'root@email.com\', password: \'admin\', role: \'admin\' });');
+    expect(fileSeed).toContain('db.users.insertOne({ name: \'admin\', email: \'root@email.com\', password: \'admin\', role: \'admin\' });')
     await frisby
       .post(`${url}/login`,
         {
@@ -44,7 +44,7 @@ describe('6 - Permissões do usuário admin', () => {
   });
 });
 
-describe('10 - Cadastramento de admin', () => {
+describe('11 - Cadastramento de admin', () => {
   let connection;
   let db;
 
