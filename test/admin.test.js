@@ -5,7 +5,7 @@ const { MongoClient } = require('mongodb');
 const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
 const url = 'http://localhost:3000';
 
-describe('6 - Permissões do usuário admin', () => {
+describe('6 - Crie uma query em mongo que insira uma pessoa usuária com permissões de admin', () => {
   let connection;
   let db;
 
@@ -44,7 +44,7 @@ describe('6 - Permissões do usuário admin', () => {
   });
 });
 
-describe('11 - Cadastramento de admin', () => {
+describe('12 - Crie um endpoint para cadastro de pessoas administradoras', () => {
   let connection;
   let db;
 
