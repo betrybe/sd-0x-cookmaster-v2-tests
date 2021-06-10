@@ -179,6 +179,7 @@ describe('3 - Crie um endpoint para o cadastro de receitas', () => {
           .expect('status', 201)
           .then((responseLogin) => {
             const { json } = responseLogin;
+            expect(json.recipe).toHaveProperty('_id');
             expect(json.recipe.name).toBe('Frango do jacquin');
             expect(json.recipe.ingredients).toBe('Frango');
             expect(json.recipe.preparation).toBe('10 min no forno');
@@ -381,6 +382,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
+        expect(result).toHaveProperty('_id');
         expect(result.name).toBe('Receita de frango do Jacquin');
         expect(result.ingredients).toBe('Frango');
         expect(result.preparation).toBe('10 min no forno');
@@ -442,6 +444,7 @@ describe('5 - Crie um endpoint para visualizar uma receita específica', () => {
           .expect('status', 200)
           .then((responseRecipes) => {
             const { json } = responseRecipes;
+            expect(json).toHaveProperty('_id');
             expect(json.name).toBe('Receita de frango do Jacquin');
             expect(json.ingredients).toBe('Frango');
             expect(json.preparation).toBe('10 min no forno');
@@ -697,6 +700,8 @@ describe('7 - Crie um endpoint para a edição de uma receita', () => {
       .then((response) => {
         const { body } = response;
         result = JSON.parse(body);
+        expect(result).toHaveProperty('_id');
+        expect(result).toHaveProperty('userId');
         expect(result.name).toBe('Receita de frango do Jacquin editado');
         expect(result.ingredients).toBe('Frango editado');
         expect(result.preparation).toBe('10 min no forno editado');
@@ -766,6 +771,8 @@ describe('7 - Crie um endpoint para a edição de uma receita', () => {
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
+        expect(result).toHaveProperty('_id');
+        expect(result).toHaveProperty('userId');
         expect(result.name).toBe('Receita de frango do Jacquin editado');
         expect(result.ingredients).toBe('Frango editado');
         expect(result.preparation).toBe('10 min no forno editado');
@@ -1107,7 +1114,12 @@ describe('9 - Crie um endpoint para a adição de uma imagem a uma receita', () 
       .then((response) => {
         const { body } = response;
         result = JSON.parse(body);
-        expect(result.image).toBe(`localhost:3000/images/${resultRecipes.recipe._id}.jpeg`);
+        expect(result.image).toBe(`localhost:3000/src/uploads/${resultRecipes.recipe._id}.jpeg`);
+        expect(result).toHaveProperty('_id');
+        expect(result).toHaveProperty('userId');
+        expect(result).toHaveProperty('name');
+        expect(result).toHaveProperty('ingredients');
+        expect(result).toHaveProperty('preparation');
       });
   });
 
@@ -1222,7 +1234,12 @@ describe('9 - Crie um endpoint para a adição de uma imagem a uma receita', () 
       .then((response) => {
         const { body } = response;
         result = JSON.parse(body);
-        expect(result.image).toBe(`localhost:3000/images/${resultRecipes.recipe._id}.jpeg`);
+        expect(result.image).toBe(`localhost:3000/src/uploads/${resultRecipes.recipe._id}.jpeg`);
+        expect(result).toHaveProperty('_id');
+        expect(result).toHaveProperty('userId');
+        expect(result).toHaveProperty('name');
+        expect(result).toHaveProperty('ingredients');
+        expect(result).toHaveProperty('preparation');
       });
   });
 });
