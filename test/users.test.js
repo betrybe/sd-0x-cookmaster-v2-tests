@@ -128,6 +128,7 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
         const result = JSON.parse(body);
         expect(result.user.name).toBe('Erick Jacquin');
         expect(result.user.email).toBe('erickjaquin@gmail.com');
+        expect(result.user).not.toHaveProperty('password');
       });
   });
 
@@ -146,6 +147,7 @@ describe('1 - Crie um endpoint para o cadastro de usuários', () => {
         expect(result.user.name).toBe('Erick Jacquin');
         expect(result.user.email).toBe('erickjaquin@gmail.com');
         expect(result.user.role).toBe('user');
+        expect(result.user).not.toHaveProperty('password');
       });
   });
 });
