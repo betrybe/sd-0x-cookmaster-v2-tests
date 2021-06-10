@@ -137,6 +137,7 @@ describe('12 - Crie um endpoint para cadastro de pessoas administradoras', () =>
           .expect('status', 201)
           .then((responseAdmin) => {
             const { json } = responseAdmin;
+            expect(json.user).toHaveProperty('_id');
             expect(json.user.name).toBe('usuario admin');
             expect(json.user.email).toBe('usuarioadmin@email.com');
             expect(json.user.role).toBe('admin');
